@@ -4,10 +4,9 @@ import { formatTime } from '../../shared/utils';
 interface DashboardProps {
   appStats: any[];
   dailyUsage: any[];
-  onRefresh: () => void;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ appStats, dailyUsage, onRefresh }) => {
+export const Dashboard: React.FC<DashboardProps> = ({ appStats, dailyUsage }) => {
   const totalTimeToday = appStats.reduce((sum, app) => sum + (app.total_duration || 0), 0);
   const topApps = appStats.slice(0, 5);
   
@@ -19,31 +18,58 @@ export const Dashboard: React.FC<DashboardProps> = ({ appStats, dailyUsage, onRe
     <div className="dashboard">
       {/* Summary Cards */}
       <div className="grid grid-cols-3">
-        <div className="card">
+        <div className="card summary-card">
           <div className="card-header">
-            <h3 className="card-title">今日使用时间</h3>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}>⏱️</span>
+              <h3 className="card-title">今日使用时间</h3>
+            </div>
           </div>
-          <div className="stat-value" style={{ fontSize: '2rem', color: '#667eea' }}>
+          <div className="stat-value" style={{ 
+            fontSize: '2.5rem', 
+            background: 'linear-gradient(45deg, #667eea, #764ba2)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            marginBottom: '0.5rem'
+          }}>
             {formatTime(totalTimeToday)}
           </div>
           <p className="card-subtitle">截至目前的总使用时间</p>
         </div>
 
-        <div className="card">
+        <div className="card summary-card">
           <div className="card-header">
-            <h3 className="card-title">活跃应用数</h3>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}>📱</span>
+              <h3 className="card-title">活跃应用数</h3>
+            </div>
           </div>
-          <div className="stat-value" style={{ fontSize: '2rem', color: '#48bb78' }}>
+          <div className="stat-value" style={{ 
+            fontSize: '2.5rem', 
+            background: 'linear-gradient(45deg, #48bb78, #68d391)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            marginBottom: '0.5rem'
+          }}>
             {appStats.length}
           </div>
           <p className="card-subtitle">今日使用过的应用程序</p>
         </div>
 
-        <div className="card">
+        <div className="card summary-card">
           <div className="card-header">
-            <h3 className="card-title">周平均时间</h3>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}>📊</span>
+              <h3 className="card-title">周平均时间</h3>
+            </div>
           </div>
-          <div className="stat-value" style={{ fontSize: '2rem', color: '#ed8936' }}>
+          <div className="stat-value" style={{ 
+            fontSize: '2.5rem', 
+            background: 'linear-gradient(45deg, #ed8936, #f6ad55)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            marginBottom: '0.5rem'
+          }}>
             {formatTime(weeklyAverage)}
           </div>
           <p className="card-subtitle">过去7天的平均使用时间</p>
@@ -54,9 +80,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ appStats, dailyUsage, onRe
       <div className="card">
         <div className="card-header">
           <h3 className="card-title">今日最常用应用</h3>
-          <button className="btn btn-secondary" onClick={onRefresh}>
-            刷新数据
-          </button>
         </div>
         
         {topApps.length > 0 ? (

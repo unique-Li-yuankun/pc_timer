@@ -24,18 +24,21 @@ function App() {
   const [dailyUsage, setDailyUsage] = useState<any[]>([]);
   const [rankings, setRankings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
-    loadData();
+    loadData(true);
     
-    // Refresh data every 30 seconds
-    const interval = setInterval(loadData, 30000);
+    // Refresh data every 10 seconds (without loading state)
+    const interval = setInterval(() => loadData(false), 10000);
     return () => clearInterval(interval);
   }, []);
 
-  const loadData = async () => {
+  const loadData = async (showLoading: boolean = false) => {
     try {
-      setLoading(true);
+      if (showLoading) {
+        setLoading(true);
+      }
       
       const [todayStats, weeklyUsage, appRankings] = await Promise.all([
         window.electronAPI.getAppStats('today'),
@@ -49,10 +52,16 @@ function App() {
       setAppStats(todayStats);
       setDailyUsage(weeklyUsage);
       setRankings(appRankings);
+      
+      if (isInitialLoad) {
+        setIsInitialLoad(false);
+      }
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
-      setLoading(false);
+      if (showLoading) {
+        setLoading(false);
+      }
     }
   };
 
@@ -68,7 +77,7 @@ function App() {
 
     switch (currentView) {
       case 'dashboard':
-        return <Dashboard appStats={appStats} dailyUsage={dailyUsage} onRefresh={loadData} />;
+        return <Dashboard appStats={appStats} dailyUsage={dailyUsage} />;
       case 'stats':
         return <StatsView appStats={appStats} onRefresh={loadData} />;
       case 'charts':
@@ -76,7 +85,7 @@ function App() {
       case 'rankings':
         return <RankingsView rankings={rankings} onRefresh={loadData} />;
       default:
-        return <Dashboard appStats={appStats} dailyUsage={dailyUsage} onRefresh={loadData} />;
+        return <Dashboard appStats={appStats} dailyUsage={dailyUsage} />;
     }
   };
 
@@ -84,11 +93,6 @@ function App() {
     <div className="app">
       <div className="app-header">
         <h1>PC 使用时间统计</h1>
-        <div className="header-controls">
-          <button className="refresh-btn" onClick={loadData} disabled={loading}>
-            {loading ? '刷新中...' : '刷新'}
-          </button>
-        </div>
       </div>
       
       <div className="app-content">
