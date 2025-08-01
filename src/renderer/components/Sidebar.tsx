@@ -1,6 +1,6 @@
 import React from 'react';
 
-type ViewType = 'dashboard' | 'stats' | 'charts' | 'rankings';
+type ViewType = 'dashboard' | 'stats' | 'charts' | 'rankings' | 'settings';
 
 interface SidebarProps {
   currentView: ViewType;
@@ -11,7 +11,8 @@ const menuItems = [
   { id: 'dashboard', label: '仪表板', icon: '📊' },
   { id: 'stats', label: '统计详情', icon: '📈' },
   { id: 'charts', label: '趋势图表', icon: '📉' },
-  { id: 'rankings', label: '应用排名', icon: '🏆' }
+  { id: 'rankings', label: '应用排名', icon: '🏆' },
+  { id: 'settings', label: '设置', icon: '⚙️' }
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange }) => {

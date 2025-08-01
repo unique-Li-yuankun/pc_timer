@@ -4,9 +4,10 @@ import { Sidebar } from './components/Sidebar';
 import { StatsView } from './components/StatsView';
 import { ChartsView } from './components/ChartsView';
 import { RankingsView } from './components/RankingsView';
+import SettingsView from './components/SettingsView';
 import './App.css';
 
-type ViewType = 'dashboard' | 'stats' | 'charts' | 'rankings';
+type ViewType = 'dashboard' | 'stats' | 'charts' | 'rankings' | 'settings';
 
 declare global {
   interface Window {
@@ -14,6 +15,8 @@ declare global {
       getAppStats: (timeRange: string) => Promise<any[]>;
       getDailyUsage: (startDate: string, endDate: string) => Promise<any[]>;
       getAppRankings: () => Promise<any[]>;
+      getAutoStartStatus: () => Promise<boolean>;
+      setAutoStart: (enabled: boolean) => Promise<boolean>;
     };
   }
 }
@@ -84,6 +87,8 @@ function App() {
         return <ChartsView dailyUsage={dailyUsage} />;
       case 'rankings':
         return <RankingsView rankings={rankings} />;
+      case 'settings':
+        return <SettingsView />;
       default:
         return <Dashboard appStats={appStats} dailyUsage={dailyUsage} />;
     }

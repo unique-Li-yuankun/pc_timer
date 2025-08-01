@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
+import { execSync } from 'child_process';
 import * as path from 'path';
 import { isDev } from '../shared/utils';
 import { DatabaseManager } from './database';
@@ -59,6 +60,44 @@ class Main {
     ipcMain.handle('get-app-rankings', async () => {
       return await this.database.getAppRankings();
     });
+
+    ipcMain.handle('get-auto-start-status', async () => {
+      return this.getAutoStartStatus();
+    });
+
+    ipcMain.handle('set-auto-start', async (_, enabled: boolean) => {
+      return this.setAutoStart(enabled);
+    });
+  }
+
+  private getAutoStartStatus(): boolean {
+    try {
+      const appName = 'PC Timer';
+      const command = `reg query "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run" /v "${appName}"`;
+      execSync(command, { stdio: 'ignore' });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  private setAutoStart(enabled: boolean): boolean {
+    try {
+      const appName = 'PC Timer';
+      const appPath = process.execPath;
+      
+      if (enabled) {
+        const command = `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run" /v "${appName}" /d "${appPath}" /f`;
+        execSync(command);
+      } else {
+        const command = `reg delete "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run" /v "${appName}" /f`;
+        execSync(command);
+      }
+      return true;
+    } catch (error) {
+      console.error('Error setting auto start:', error);
+      return false;
+    }
   }
 
   public init(): void {
