@@ -3,10 +3,9 @@ import { formatTime } from '../../shared/utils';
 
 interface StatsViewProps {
   appStats: any[];
-  onRefresh: () => void;
 }
 
-export const StatsView: React.FC<StatsViewProps> = ({ appStats: initialAppStats, onRefresh }) => {
+export const StatsView: React.FC<StatsViewProps> = ({ appStats: initialAppStats }) => {
   const [timeRange, setTimeRange] = useState('today');
   const [appStats, setAppStats] = useState(initialAppStats);
   const [loading, setLoading] = useState(false);
@@ -157,13 +156,6 @@ export const StatsView: React.FC<StatsViewProps> = ({ appStats: initialAppStats,
             <p style={{ marginTop: '0.5rem' }}>
               {timeRange === 'today' ? '今天还没有使用记录' : '所选时间范围内没有使用记录'}
             </p>
-            <button 
-              className="btn btn-primary" 
-              onClick={onRefresh}
-              style={{ marginTop: '1rem' }}
-            >
-              刷新数据
-            </button>
           </div>
         )}
       </div>

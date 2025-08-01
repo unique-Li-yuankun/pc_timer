@@ -44,6 +44,7 @@ export class ActivityTracker {
 
   private async trackCurrentActivity(): Promise<void> {
     try {
+      console.log(`[${new Date().toLocaleTimeString()}] Checking active window...`);
       const activeWindow = await this.getActiveWindow();
       
       if (!activeWindow || !activeWindow.processName) {
@@ -52,6 +53,7 @@ export class ActivityTracker {
 
       const appName = activeWindow.processName;
       const now = Date.now();
+      console.log(`Current: ${this.currentApp} -> Detected: ${appName}`);
 
       // If app changed, save previous session and start new one
       if (this.currentApp !== appName) {

@@ -3,10 +3,9 @@ import { formatTime } from '../../shared/utils';
 
 interface RankingsViewProps {
   rankings: any[];
-  onRefresh: () => void;
 }
 
-export const RankingsView: React.FC<RankingsViewProps> = ({ rankings, onRefresh }) => {
+export const RankingsView: React.FC<RankingsViewProps> = ({ rankings }) => {
   const [sortBy, setSortBy] = useState<'total_duration' | 'active_days' | 'avg_session_duration'>('total_duration');
 
   const sortOptions = [
@@ -87,9 +86,6 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ rankings, onRefresh 
                 </option>
               ))}
             </select>
-            <button className="btn btn-secondary" onClick={onRefresh}>
-              刷新
-            </button>
           </div>
         </div>
 
@@ -227,13 +223,6 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ rankings, onRefresh 
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🏆</div>
             <h3>暂无排名数据</h3>
             <p style={{ marginTop: '0.5rem' }}>使用应用程序后排名将在这里显示</p>
-            <button 
-              className="btn btn-primary" 
-              onClick={onRefresh}
-              style={{ marginTop: '1rem' }}
-            >
-              刷新数据
-            </button>
           </div>
         )}
       </div>

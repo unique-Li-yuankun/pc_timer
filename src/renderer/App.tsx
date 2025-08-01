@@ -79,11 +79,11 @@ function App() {
       case 'dashboard':
         return <Dashboard appStats={appStats} dailyUsage={dailyUsage} />;
       case 'stats':
-        return <StatsView appStats={appStats} onRefresh={loadData} />;
+        return <StatsView appStats={appStats} />;
       case 'charts':
-        return <ChartsView dailyUsage={dailyUsage} onRefresh={loadData} />;
+        return <ChartsView dailyUsage={dailyUsage} />;
       case 'rankings':
-        return <RankingsView rankings={rankings} onRefresh={loadData} />;
+        return <RankingsView rankings={rankings} />;
       default:
         return <Dashboard appStats={appStats} dailyUsage={dailyUsage} />;
     }

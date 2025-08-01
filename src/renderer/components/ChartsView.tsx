@@ -3,10 +3,9 @@ import { formatTime } from '../../shared/utils';
 
 interface ChartsViewProps {
   dailyUsage: any[];
-  onRefresh: () => void;
 }
 
-export const ChartsView: React.FC<ChartsViewProps> = ({ dailyUsage: initialDailyUsage, onRefresh }) => {
+export const ChartsView: React.FC<ChartsViewProps> = ({ dailyUsage: initialDailyUsage }) => {
   const [dateRange, setDateRange] = useState('7days');
   const [dailyUsage, setDailyUsage] = useState(initialDailyUsage);
   const [loading, setLoading] = useState(false);
@@ -206,13 +205,6 @@ export const ChartsView: React.FC<ChartsViewProps> = ({ dailyUsage: initialDaily
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📈</div>
             <h3>暂无图表数据</h3>
             <p style={{ marginTop: '0.5rem' }}>所选时间范围内没有使用记录</p>
-            <button 
-              className="btn btn-primary" 
-              onClick={onRefresh}
-              style={{ marginTop: '1rem' }}
-            >
-              刷新数据
-            </button>
           </div>
         )}
       </div>

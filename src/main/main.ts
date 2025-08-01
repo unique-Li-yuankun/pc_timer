@@ -81,7 +81,7 @@ class Main {
     });
 
     app.on('before-quit', async () => {
-      this.activityTracker.stop();
+      await this.activityTracker.stop();
       await this.database.close();
     });
   }
